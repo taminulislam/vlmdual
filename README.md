@@ -15,7 +15,6 @@ This repository accompanies our manuscript:
 
 > **VLMDual: A Vision-Language Distillation Framework for Joint
 > Classification and Plume Segmentation in Rumen Acidosis Detection**
-> *Smart Agricultural Technology* (Elsevier), manuscript ID **ATECH-D-26-01700**.
 
 ## Highlights
 
