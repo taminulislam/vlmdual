@@ -1,0 +1,57 @@
+seed: 42
+
+data:
+  project_root: /work/nvme/bgte/tislam6/ACID_Journal
+  # frame_path / mask_path in the CSVs are relative to `dataset/`
+  dataset_root: /work/nvme/bgte/tislam6/ACID_Journal/dataset
+  ext_dir:      /work/nvme/bgte/tislam6/ACID_Journal/dataset/extended_dataset_50x
+  train_csv: train_annotations.csv
+  val_csv:   val_annotations.csv
+  test_csv:  test_annotations.csv
+  img_size:  256
+  batch_size: 32
+  num_workers: 8
+  pin_memory: true
+  use_weighted_sampler: true   # class-balanced mini-batches (inverse frequency)
+  merge_tube: true             # remap tube(1)→bg(0), gas(2)→gas(1) at load time
+
+model:
+  backbone: resnet50
+  pretrained: true
+  num_classes: 3      # classification (Healthy, Transitional, Acidotic)
+  seg_classes: 2      # segmentation (background, gas) — tube merged into bg
+  dropout: 0.3
+  attn_heads: 8
+
+loss:
+  # class_id order in the CSV: 0=Healthy, 1=Transitional, 2=Acidotic
+  # Weighted sampler makes mini-batches class-balanced, so CE weights stay mild.
+  cls_class_weights: [1.0, 2.0, 1.0]
+  seg_w: 1.0
+  cls_w: 1.0
+  dice_include_background: false
+
+optim:
+  type: adamw
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  betas: [0.9, 0.999]
+
+sched:
+  warmup_epochs: 5
+  total_epochs: 50
+  min_lr_factor: 0.01   # cosine floor = lr * min_lr_factor
+
+train:
+  epochs: 50
+  amp: true
+  grad_clip: 1.0
+  patience: 10          # early stop on val_balanced_accuracy
+  ckpt_dir: /work/nvme/bgte/tislam6/ACID_Journal/checkpoints/baseline
+  log_every: 100        # step-level log interval
+  experiment_name: baseline_dualstream_resnet50
+
+wandb:
+  project: acid_journal
+  mode: offline         # compute node may have no network; offline is safe
+  run_name: baseline_dualstream_resnet50

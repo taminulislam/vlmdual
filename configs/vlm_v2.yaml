@@ -1,0 +1,63 @@
+seed: 42
+
+data:
+  project_root: /work/nvme/bgte/tislam6/ACID_Journal
+  dataset_root: /work/nvme/bgte/tislam6/ACID_Journal/dataset
+  ext_dir:      /work/nvme/bgte/tislam6/ACID_Journal/dataset/extended_dataset_50x
+  train_csv: train_annotations.csv
+  val_csv:   val_annotations.csv
+  test_csv:  test_annotations.csv
+  img_size:  256
+  batch_size: 32
+  num_workers: 8
+  pin_memory: true
+  use_weighted_sampler: true
+  merge_tube: true
+  label_fraction: 1.0          # label-efficiency sweep overrides via CLI
+
+model:
+  name: ours_vlm_v2
+  num_classes: 3
+  seg_classes: 2
+  pretrained: true
+  dropout: 0.3
+  attn_heads: 8
+  clip_model: ViT-B-16
+  clip_pretrained: openai
+  cls_feat_dim: 512            # penultimate classifier feature dim
+
+loss:
+  cls_class_weights: [1.0, 2.0, 1.0]
+  seg_w: 1.0
+  cls_w: 1.0
+  align_w: 0.0                 # disable legacy v1 cosine alignment
+  align_dist_w: 0.10           # multi-scale visual distillation (c4 + c5)
+  align_text_w: 0.50           # cross-modal InfoNCE text alignment
+  text_temperature: 0.07
+  use_multiscale_dist: true
+  dice_include_background: false
+
+optim:
+  type: adamw
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  betas: [0.9, 0.999]
+
+sched:
+  warmup_epochs: 5
+  total_epochs: 50
+  min_lr_factor: 0.01
+
+train:
+  epochs: 50
+  amp: true
+  grad_clip: 1.0
+  patience: 10
+  ckpt_dir: /work/nvme/bgte/tislam6/ACID_Journal/checkpoints/vlm_v2
+  log_every: 100
+  experiment_name: vlm_v2_full
+
+wandb:
+  project: acid_journal
+  mode: offline
+  run_name: vlm_v2_full

@@ -1,0 +1,56 @@
+# Common config for the baseline zoo.
+# Individual baselines override `model.name` (and anything else they need).
+
+seed: 42
+
+data:
+  project_root: /work/nvme/bgte/tislam6/ACID_Journal
+  dataset_root: /work/nvme/bgte/tislam6/ACID_Journal/dataset
+  ext_dir:      /work/nvme/bgte/tislam6/ACID_Journal/dataset/extended_dataset_50x
+  train_csv: train_annotations.csv
+  val_csv:   val_annotations.csv
+  test_csv:  test_annotations.csv
+  img_size:  256
+  batch_size: 32
+  num_workers: 8
+  pin_memory: true
+  use_weighted_sampler: true
+  merge_tube: true
+
+model:
+  name: resnet50_dual       # overridden per file
+  num_classes: 3
+  seg_classes: 2      # background + gas (tube merged into bg)
+  pretrained: true
+  dropout: 0.3
+  attn_heads: 8
+  clip_model: ViT-B-16
+  clip_pretrained: openai
+  clip_dim: 512
+
+loss:
+  cls_class_weights: [1.0, 2.0, 1.0]
+  seg_w: 1.0
+  cls_w: 1.0
+  align_w: 0.0              # baselines have no alignment loss
+  dice_include_background: false
+
+optim:
+  type: adamw
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  betas: [0.9, 0.999]
+
+sched:
+  warmup_epochs: 5
+  total_epochs: 50
+  min_lr_factor: 0.01
+
+train:
+  epochs: 50
+  amp: true
+  grad_clip: 1.0
+  patience: 10
+  ckpt_dir: /work/nvme/bgte/tislam6/ACID_Journal/checkpoints/zoo/REPLACE_ME
+  log_every: 100
+  experiment_name: REPLACE_ME

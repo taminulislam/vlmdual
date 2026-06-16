@@ -1,0 +1,81 @@
+# === Large data — NEVER commit ===
+dataset/augmented_dataset/
+dataset/mmseg_dataset/
+dataset/original_annotated/
+dataset/extended_dataset_50x/
+dataset/extended_dataset/
+
+# === Model checkpoints & weights ===
+checkpoints/
+checkpoints_*/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# === HuggingFace model cache ===
+hf_cache/
+.cache/
+
+# === Results — track CSVs/JSON/TEX, skip large npz binaries ===
+results/
+results_*/
+*.npz
+
+# === SLURM / job logs ===
+jobs/logs/
+jobs/logs_*/
+slurm-*.out
+slurm-*.err
+*.out
+*.err
+
+# === Augmentation logs ===
+logs/
+
+# === Wandb ===
+wandb/
+**/wandb/
+
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.eggs/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+.python-version
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# === Media (do not commit raw OGI frames or figures) ===
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.mp4
+*.avi
+*.mov
+*.webm
+*.webp
+*.svg
+*.bmp
+*.tiff
+*.tif
+
+# === Misc ===
+*.tmp
+*.bak
+.ipynb_checkpoints/
