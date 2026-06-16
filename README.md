@@ -171,56 +171,16 @@ before submitting on a different system.
 | `jobs/run_r2q2_shortcut_audit.sh` | CH₄-gate shortcut audit (Table 10) |
 | `jobs/run_llava_h200.sh` | Post-hoc LLaVA narrative generation |
 
-## Headline results
-
-Test-set performance of `VLMDual (alpha_text_1p0)` (mean ± std over three
-seeds {42, 1337, 2024}):
-
-| Metric | Value |
-|---|---|
-| Accuracy | 0.983 ± 0.011 |
-| Balanced accuracy | 0.985 ± 0.007 |
-| Macro F<sub>1</sub> | 0.970 ± 0.024 |
-| MCC | 0.969 ± 0.020 |
-| AUROC | 0.997 ± 0.003 |
-| ECE ↓ | 0.015 ± 0.014 |
-| mIoU (background + foreground) | 0.836 ± 0.004 |
-| Dice (background + foreground) | 0.911 ± 0.003 |
-| HD95 (px) ↓ | 35.8 ± 0.8 |
-| Latency (ms / image, H200) | 16.0 |
-
 ## Robustness audits
 
 **Leave-one-session-out (LOSO) audit.** Session-disjoint mirror folds
 (fold A→B and fold B→A) trained on one half of the recording sessions and
-evaluated on the other, three seeds each. Pooled LOSO drops accuracy by
-20.5 pp and balanced accuracy by 19.7 pp relative to the within-experiment
-headline split, while AUROC degrades by only 0.121 and mIoU by only 0.051 —
-a substantive but graceful cross-recording distribution shift.
+evaluated on the other, three seeds each.
 
 **CH<sub>4</sub>-gate shortcut audit.** Three controlled ablations of the
 `has_ch4` availability flag (`Gate-random` randomises the flag; `Gate-zero`
 forces it to 0; `CO2-only` additionally zeros the CH<sub>4</sub> input
-plane). The worst ablation costs only 4.7 pp balanced accuracy versus the
-headline, with foreground segmentation statistically indistinguishable
-across all four settings — inconsistent with the gate-as-shortcut
-hypothesis.
-
-## Citation
-
-If you use this code or build on this work, please cite our manuscript:
-
-```bibtex
-@article{islam2026vlmdual,
-  title   = {{VLMDual}: A Vision-Language Distillation Framework for Joint
-             Classification and Plume Segmentation in Rumen Acidosis Detection},
-  author  = {Islam, Taminul and Sarker, Toqi Tahamid and Embaby, Mohamed and
-             Ahmed, Khaled R. and AbuGhazaleh, Amer},
-  journal = {Smart Agricultural Technology},
-  year    = {2026},
-  note    = {Manuscript ID ATECH-D-26-01700}
-}
-```
+plane).
 
 ## Acknowledgements
 
